@@ -15,8 +15,9 @@ const __dirname = dirname(__filename);
 const SOURCE_URL = process.env.SOURCE_URL || 
   'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
 
-const OUTPUT_DIR = join(__dirname, 'public');
-const OUTPUT_FILE = join(OUTPUT_DIR, 'canada-mens-olympic-hockey-2026.ics');
+// Output to root directory for cleaner GitHub Pages URL
+// Alternative: use 'public' folder and URL would be /public/canada-mens-olympic-hockey-2026.ics
+const OUTPUT_FILE = join(__dirname, 'canada-mens-olympic-hockey-2026.ics');
 
 /**
  * Fetch HTML from the source URL
@@ -49,12 +50,6 @@ async function fetchSchedule() {
  */
 async function main() {
   try {
-    // Ensure output directory exists
-    if (!existsSync(OUTPUT_DIR)) {
-      await mkdir(OUTPUT_DIR, { recursive: true });
-      console.log(`Created output directory: ${OUTPUT_DIR}`);
-    }
-
     // Fetch and parse schedule
     const html = await fetchSchedule();
     const games = parseSchedule(html);

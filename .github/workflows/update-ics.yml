@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'public/**'
+      - 'canada-mens-olympic-hockey-2026.ics'
       - '.github/workflows/update-ics.yml'
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
       - name: Check for changes
         id: verify-changed-files
         run: |
-          if [ -n "$(git status --porcelain public/)" ]; then
+          if [ -n "$(git status --porcelain canada-mens-olympic-hockey-2026.ics)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -54,7 +54,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add public/canada-mens-olympic-hockey-2026.ics
+          git add canada-mens-olympic-hockey-2026.ics
           git commit -m "Update ICS calendar [skip ci]" || exit 0
           git push
 

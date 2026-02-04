@@ -12,18 +12,18 @@ This project automatically:
 
 ## Subscription
 
-Once this repository is published to GitHub Pages, you can subscribe to the calendar using:
+Once GitHub Pages is enabled, you can subscribe to the calendar using:
 
 ### Subscription URL
 
+**HTTPS:**
 ```
-https://<your-username>.github.io/olympic-hockey/canada-mens-olympic-hockey-2026.ics
+https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 ```
 
-Or using the `webcal://` protocol:
-
+**Webcal (alternative):**
 ```
-webcal://<your-username>.github.io/olympic-hockey/canada-mens-olympic-hockey-2026.ics
+webcal://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 ```
 
 ### How to Subscribe
@@ -70,7 +70,7 @@ npm run build-ics
 This will:
 - Fetch the schedule from Hockey Canada
 - Parse the HTML
-- Generate `public/canada-mens-olympic-hockey-2026.ics`
+- Generate `canada-mens-olympic-hockey-2026.ics` in the root directory
 
 ### Custom Source URL
 
@@ -80,20 +80,75 @@ You can override the source URL via environment variable:
 SOURCE_URL=https://example.com/schedule npm run build-ics
 ```
 
-## GitHub Pages Setup
+## GitHub Pages Setup (Step-by-Step)
 
-1. **Enable GitHub Pages** in your repository settings:
-   - Go to Settings → Pages
-   - Source: Deploy from a branch
-   - Branch: `main` / `root`
+### Step 1: Push Your Code to GitHub
 
-2. **The GitHub Action will automatically**:
-   - Run every 6 hours
-   - Fetch the latest schedule
-   - Update the ICS file if changes are detected
-   - Commit and push changes
+If you haven't already, push this repository to GitHub:
 
-3. **Manual trigger**: You can also manually trigger the workflow from the Actions tab
+```bash
+git init
+git add .
+git commit -m "Initial commit: Olympic Hockey ICS feed"
+git remote add origin https://github.com/joeuttaro/cmoh.git
+git branch -M main
+git push -u origin main
+```
+
+### Step 2: Enable GitHub Pages
+
+1. Go to your repository on GitHub: `https://github.com/joeuttaro/cmoh`
+2. Click on **Settings** (top menu bar)
+3. Scroll down to **Pages** in the left sidebar (under "Code and automation")
+4. Under **Source**, select:
+   - **Deploy from a branch**
+   - **Branch**: `main`
+   - **Folder**: `/ (root)` or `/public` (if available)
+   - Click **Save**
+
+   **Note:** If `/public` is not available as an option, use `/ (root)`. GitHub Pages will serve files from the root, and the `public/` folder will be accessible.
+
+5. Wait a few minutes for GitHub to build and deploy your site
+6. Your site will be available at: `https://joeuttaro.github.io/cmoh/`
+
+### Step 3: Verify the ICS File is Accessible
+
+After GitHub Pages is enabled, test that the file is accessible:
+
+1. Open: `https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics`
+2. You should see the ICS calendar content (or download the file)
+3. If you get a 404, wait a few more minutes and try again
+
+### Step 4: Test the GitHub Action
+
+1. Go to the **Actions** tab in your repository
+2. You should see the "Update ICS Calendar" workflow
+3. You can manually trigger it by clicking "Run workflow"
+4. Check the logs to ensure it runs successfully
+
+### Step 5: Subscribe to the Calendar
+
+Once verified, use this URL to subscribe:
+
+```
+https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
+```
+
+### Automatic Updates
+
+The GitHub Action will automatically:
+- Run every 6 hours
+- Fetch the latest schedule from Hockey Canada
+- Update the ICS file if changes are detected
+- Commit and push changes back to the repository
+- GitHub Pages will automatically serve the updated file
+
+### Manual Trigger
+
+You can also manually trigger the workflow:
+1. Go to **Actions** tab
+2. Click on "Update ICS Calendar" workflow
+3. Click "Run workflow" → "Run workflow" button
 
 ## Features
 
@@ -111,8 +166,7 @@ SOURCE_URL=https://example.com/schedule npm run build-ics
 ├── lib/
 │   ├── parse.js            # HTML parsing logic
 │   └── ics.js              # ICS generation logic
-├── public/
-│   └── canada-mens-olympic-hockey-2026.ics
+├── canada-mens-olympic-hockey-2026.ics  # Generated ICS file (in root for GitHub Pages)
 ├── .github/
 │   └── workflows/
 │       └── update-ics.yml  # GitHub Action workflow
