@@ -83,25 +83,43 @@ async function main() {
     // Fetch and parse schedule
     let games = [];
     let url = SOURCE_URLS[0];
+    let useFallback = false;
     
     try {
       const result = await fetchSchedule();
       games = parseSchedule(result.html, result.url);
       url = result.url;
       console.log(`Found ${games.length} Team Canada games from scraping`);
+      
+      if (games.length === 0) {
+        console.warn('Scraping succeeded but found 0 games');
+        useFallback = true;
+      }
     } catch (error) {
       console.error('Failed to fetch schedule:', error.message);
-      games = [];
+      console.error('Will use fallback games');
+      useFallback = true;
     }
     
     // If scraping found no games, use fallback
-    if (games.length === 0) {
+    if (games.length === 0 || useFallback) {
       console.warn('\n⚠️  WARNING: No games found from scraping.');
       console.warn('Using fallback: Manual game data');
       console.warn('Please update getFallbackGames() in generate.js with actual schedule when available\n');
-      games = getFallbackGames();
-      url = 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
-      console.log(`Fallback: Found ${games.length} games`);
+      
+      try {
+        games = getFallbackGames();
+        console.log(`Fallback: Retrieved ${games.length} games`);
+        
+        if (games.length === 0) {
+          throw new Error('getFallbackGames() returned empty array!');
+        }
+        
+        url = 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
+      } catch (error) {
+        console.error(`❌ FATAL: Failed to get fallback games: ${error.message}`);
+        throw error;
+      }
     }
     
     if (games.length > 0) {
@@ -116,16 +134,36 @@ async function main() {
 
     // Generate ICS
     console.log(`\nGenerating ICS file with ${games.length} events...`);
-    const icsContent = generateICS(games, url);
+    let icsContent;
+    try {
+      icsContent = generateICS(games, url);
+    } catch (error) {
+      console.error(`\n❌ FATAL ERROR in generateICS: ${error.message}`);
+      console.error(`Stack: ${error.stack}`);
+      process.exit(1);
+    }
     
     // Verify events were created
     const eventCount = (icsContent.match(/BEGIN:VEVENT/g) || []).length;
+    console.log(`ICS file generated: ${icsContent.length} bytes`);
+    console.log(`Events found in ICS: ${eventCount}`);
+    
     if (eventCount === 0) {
-      console.error(`\n❌ ERROR: ICS file generated but contains 0 events!`);
-      console.error(`This indicates an error in event creation. Check the logs above.`);
+      console.error(`\n❌ CRITICAL ERROR: ICS file generated but contains 0 events!`);
+      console.error(`Games passed to generateICS: ${games.length}`);
+      console.error(`This indicates an error in event creation.`);
+      console.error(`\nFirst 500 chars of ICS file:`);
+      console.error(icsContent.substring(0, 500));
+      console.error(`\nLast 500 chars of ICS file:`);
+      console.error(icsContent.substring(Math.max(0, icsContent.length - 500)));
       process.exit(1);
     }
-    console.log(`✓ ICS contains ${eventCount} events`);
+    
+    if (eventCount !== games.length) {
+      console.warn(`\n⚠️  WARNING: Expected ${games.length} events but found ${eventCount} in ICS file`);
+    } else {
+      console.log(`✓ Success: All ${eventCount} events created in ICS file`);
+    }
     
     // Write to file
     await writeFile(OUTPUT_FILE, icsContent, 'utf-8');
