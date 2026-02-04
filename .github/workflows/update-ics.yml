@@ -33,12 +33,40 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Generate ICS file
         run: npm run build-ics
         env:
           SOURCE_URL: ${{ secrets.SOURCE_URL || 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule' }}
+        continue-on-error: false
+
+      - name: Verify ICS file was created
+        run: |
+          if [ ! -f canada-mens-olympic-hockey-2026.ics ]; then
+            echo "❌ ERROR: ICS file was not created!"
+            exit 1
+          fi
+          
+          FILE_SIZE=$(wc -c < canada-mens-olympic-hockey-2026.ics)
+          echo "ICS file size: $FILE_SIZE bytes"
+          
+          EVENT_COUNT=$(grep -c "BEGIN:VEVENT" canada-mens-olympic-hockey-2026.ics || echo "0")
+          echo "Events in ICS file: $EVENT_COUNT"
+          
+          if [ "$EVENT_COUNT" -eq "0" ]; then
+            echo "❌ ERROR: ICS file contains 0 events!"
+            echo ""
+            echo "First 1000 characters of ICS file:"
+            head -c 1000 canada-mens-olympic-hockey-2026.ics
+            echo ""
+            echo ""
+            echo "Last 1000 characters of ICS file:"
+            tail -c 1000 canada-mens-olympic-hockey-2026.ics
+            exit 1
+          fi
+          
+          echo "✓ ICS file is valid with $EVENT_COUNT events"
 
       - name: Check for changes
         id: verify-changed-files
@@ -57,6 +85,19 @@ jobs:
           git add canada-mens-olympic-hockey-2026.ics
           git commit -m "Update ICS calendar [skip ci]" || exit 0
           git push
+      
+      - name: Force commit if file has events but wasn't changed
+        if: steps.verify-changed-files.outputs.changed == 'false'
+        run: |
+          EVENT_COUNT=$(grep -c "BEGIN:VEVENT" canada-mens-olympic-hockey-2026.ics || echo "0")
+          if [ "$EVENT_COUNT" -gt "0" ]; then
+            echo "File has $EVENT_COUNT events but wasn't detected as changed. Force committing..."
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add canada-mens-olympic-hockey-2026.ics
+            git commit -m "Update ICS calendar (force) [skip ci]" || exit 0
+            git push || echo "Push failed (may be no-op)"
+          fi
 
       - name: Summary
         if: steps.verify-changed-files.outputs.changed == 'true'

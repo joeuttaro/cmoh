@@ -6,9 +6,18 @@ import { existsSync } from 'fs';
 import crypto from 'crypto';
 import { parseSchedule } from './lib/parse.js';
 import { generateICS } from './lib/ics.js';
-import { fetchWithPuppeteer } from './lib/fetch-with-puppeteer.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+// Optional Puppeteer import (only if available)
+async function getPuppeteerFetcher() {
+  try {
+    const puppeteerModule = await import('./lib/fetch-with-puppeteer.js');
+    return puppeteerModule.fetchWithPuppeteer;
+  } catch (error) {
+    return null;
+  }
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,15 +69,20 @@ async function fetchSchedule() {
   }
   
   // If regular fetch failed, try Puppeteer (handles JavaScript-rendered content)
-  console.log('\nRegular fetch failed, trying Puppeteer for JavaScript-rendered content...');
-  for (const url of SOURCE_URLS) {
-    try {
-      return await fetchWithPuppeteer(url);
-    } catch (error) {
-      console.warn(`✗ Puppeteer failed for ${url}: ${error.message}`);
-      lastError = error;
-      continue;
+  const fetchWithPuppeteer = await getPuppeteerFetcher();
+  if (fetchWithPuppeteer) {
+    console.log('\nRegular fetch failed, trying Puppeteer for JavaScript-rendered content...');
+    for (const url of SOURCE_URLS) {
+      try {
+        return await fetchWithPuppeteer(url);
+      } catch (error) {
+        console.warn(`✗ Puppeteer failed for ${url}: ${error.message}`);
+        lastError = error;
+        continue;
+      }
     }
+  } else {
+    console.log('\nPuppeteer not available, skipping JavaScript-rendered content fetch');
   }
   
   // If all methods failed, throw the last error

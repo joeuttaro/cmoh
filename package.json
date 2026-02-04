@@ -20,7 +20,9 @@
   "dependencies": {
     "cheerio": "^1.0.0",
     "ical-generator": "^8.0.0",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^3.3.2"
+  },
+  "optionalDependencies": {
     "puppeteer": "^21.0.0"
   },
   "devDependencies": {
