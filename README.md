@@ -68,9 +68,24 @@ npm run build-ics
 ```
 
 This will:
-- Fetch the schedule from Hockey Canada
-- Parse the HTML
+- Fetch the schedule from Hockey Canada (with IIHF as backup)
+- Parse the HTML using multiple strategies
+- Extract all Team Canada games across all rounds
 - Generate `canada-mens-olympic-hockey-2026.ics` in the root directory
+
+### Debug Parsing
+
+To test the parser without generating an ICS file:
+
+```bash
+node debug-parse.js
+```
+
+Or test a specific URL:
+
+```bash
+node debug-parse.js https://www.iihf.com/en/events/2026/olympic-m/schedule
+```
 
 ### Custom Source URL
 
@@ -177,7 +192,19 @@ You can also manually trigger the workflow:
 
 ### No games found
 
-If the script reports "No games found", the Hockey Canada page structure may have changed. You'll need to update the parsing logic in `lib/parse.js` to match the new HTML structure.
+If the script reports "No games found", try these steps:
+
+1. **Check the debug script**: Run `node debug-parse.js` to see detailed parsing output
+2. **Try alternative source**: The script automatically tries IIHF schedule as a backup
+3. **Check HTML structure**: If parsing fails, the HTML is saved to `/tmp/hockey-schedule.html` for inspection
+4. **JavaScript-rendered content**: If the schedule loads via JavaScript, cheerio can't parse it. You may need to use Puppeteer or Playwright for dynamic content
+5. **Update parser**: If the page structure changed, update the parsing logic in `lib/parse.js`
+
+The parser now supports:
+- Multiple HTML structures (tables, divs, structured data)
+- All tournament rounds (Preliminary, Qualifying, Quarterfinal, Semifinal, Final)
+- Multiple data sources (Hockey Canada and IIHF)
+- Better opponent and date/time extraction
 
 ### Timezone issues
 

@@ -11,38 +11,53 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Default source URL - can be overridden via SOURCE_URL env var
-const SOURCE_URL = process.env.SOURCE_URL || 
-  'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
+// Default source URLs - can be overridden via SOURCE_URL env var
+// Try Hockey Canada first, fallback to IIHF if needed
+const SOURCE_URLS = process.env.SOURCE_URL ? 
+  [process.env.SOURCE_URL] : 
+  [
+    'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule',
+    'https://www.iihf.com/en/events/2026/olympic-m/schedule'
+  ];
 
 // Output to root directory for cleaner GitHub Pages URL
 // Alternative: use 'public' folder and URL would be /public/canada-mens-olympic-hockey-2026.ics
 const OUTPUT_FILE = join(__dirname, 'canada-mens-olympic-hockey-2026.ics');
 
 /**
- * Fetch HTML from the source URL
+ * Fetch HTML from the source URL(s)
  */
 async function fetchSchedule() {
-  console.log(`Fetching schedule from: ${SOURCE_URL}`);
+  let lastError = null;
   
-  try {
-    const response = await fetch(SOURCE_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  for (const url of SOURCE_URLS) {
+    console.log(`Trying to fetch schedule from: ${url}`);
+    
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const html = await response.text();
+      console.log(`✓ Fetched ${html.length} bytes of HTML from ${url}`);
+      return { html, url };
+    } catch (error) {
+      console.warn(`✗ Failed to fetch from ${url}: ${error.message}`);
+      lastError = error;
+      continue; // Try next URL
     }
-
-    const html = await response.text();
-    console.log(`Fetched ${html.length} bytes of HTML`);
-    return html;
-  } catch (error) {
-    console.error('Error fetching schedule:', error);
-    throw error;
   }
+  
+  // If all URLs failed, throw the last error
+  throw new Error(`Failed to fetch from all sources. Last error: ${lastError?.message}`);
 }
 
 /**
@@ -51,8 +66,8 @@ async function fetchSchedule() {
 async function main() {
   try {
     // Fetch and parse schedule
-    const html = await fetchSchedule();
-    const games = parseSchedule(html);
+    const { html, url } = await fetchSchedule();
+    const games = parseSchedule(html, url);
     
     console.log(`Found ${games.length} Team Canada games`);
     
@@ -66,7 +81,7 @@ async function main() {
     }
 
     // Generate ICS
-    const icsContent = generateICS(games, SOURCE_URL);
+    const icsContent = generateICS(games, url);
     
     // Write to file
     await writeFile(OUTPUT_FILE, icsContent, 'utf-8');
