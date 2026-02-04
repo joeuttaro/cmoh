@@ -3,8 +3,10 @@
 import fetch from 'node-fetch';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
+import crypto from 'crypto';
 import { parseSchedule } from './lib/parse.js';
 import { generateICS } from './lib/ics.js';
+import { fetchWithPuppeteer } from './lib/fetch-with-puppeteer.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -25,11 +27,12 @@ const SOURCE_URLS = process.env.SOURCE_URL ?
 const OUTPUT_FILE = join(__dirname, 'canada-mens-olympic-hockey-2026.ics');
 
 /**
- * Fetch HTML from the source URL(s)
+ * Fetch HTML from the source URL(s) - try regular fetch first, then Puppeteer
  */
 async function fetchSchedule() {
   let lastError = null;
   
+  // First, try regular fetch (faster)
   for (const url of SOURCE_URLS) {
     console.log(`Trying to fetch schedule from: ${url}`);
     
@@ -56,7 +59,19 @@ async function fetchSchedule() {
     }
   }
   
-  // If all URLs failed, throw the last error
+  // If regular fetch failed, try Puppeteer (handles JavaScript-rendered content)
+  console.log('\nRegular fetch failed, trying Puppeteer for JavaScript-rendered content...');
+  for (const url of SOURCE_URLS) {
+    try {
+      return await fetchWithPuppeteer(url);
+    } catch (error) {
+      console.warn(`✗ Puppeteer failed for ${url}: ${error.message}`);
+      lastError = error;
+      continue;
+    }
+  }
+  
+  // If all methods failed, throw the last error
   throw new Error(`Failed to fetch from all sources. Last error: ${lastError?.message}`);
 }
 
@@ -66,17 +81,31 @@ async function fetchSchedule() {
 async function main() {
   try {
     // Fetch and parse schedule
-    const { html, url } = await fetchSchedule();
-    const games = parseSchedule(html, url);
+    let games = [];
+    let url = SOURCE_URLS[0];
     
-    console.log(`Found ${games.length} Team Canada games`);
+    try {
+      const result = await fetchSchedule();
+      games = parseSchedule(result.html, result.url);
+      url = result.url;
+      console.log(`Found ${games.length} Team Canada games from scraping`);
+    } catch (error) {
+      console.error('Failed to fetch schedule:', error.message);
+      games = [];
+    }
     
+    // If scraping found no games, use fallback
     if (games.length === 0) {
-      console.warn('WARNING: No games found. The page structure may have changed.');
-      console.warn('You may need to update the parsing logic in lib/parse.js');
-    } else {
+      console.warn('WARNING: No games found from scraping.');
+      console.warn('Using fallback: Manual game data');
+      console.warn('Please update getFallbackGames() in generate.js with actual schedule when available');
+      games = getFallbackGames();
+      url = 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
+    }
+    
+    if (games.length > 0) {
       games.forEach((game, i) => {
-        console.log(`  ${i + 1}. ${game.dateStr} ${game.timeStr} vs ${game.opponent} (${game.round})`);
+        console.log(`  ${i + 1}. ${game.round}: ${game.dateStr} ${game.timeStr} vs ${game.opponent}`);
       });
     }
 
@@ -93,6 +122,56 @@ async function main() {
     console.error('Error generating ICS:', error);
     process.exit(1);
   }
+}
+
+/**
+ * Fallback game data - use if scraping fails
+ * Update this with actual schedule when available
+ * Format: Preliminary round games for Team Canada Men's Hockey
+ * 
+ * NOTE: These are placeholder games. Update with actual schedule when published.
+ * The schedule will be available closer to the Olympics (typically 6-12 months before).
+ */
+function getFallbackGames() {
+  // These are placeholder dates - update with actual schedule when published
+  // Milano Cortina 2026 runs Feb 6-22, 2026
+  // Preliminary round typically Feb 6-11
+  const games = [
+    {
+      dateStr: '06/02/2026',
+      timeStr: '20:00',
+      opponent: 'TBD',
+      venue: 'Milano Cortina 2026',
+      round: 'Preliminary',
+      rawText: 'Canada vs TBD - Preliminary Round'
+    },
+    {
+      dateStr: '08/02/2026',
+      timeStr: '20:00',
+      opponent: 'TBD',
+      venue: 'Milano Cortina 2026',
+      round: 'Preliminary',
+      rawText: 'Canada vs TBD - Preliminary Round'
+    },
+    {
+      dateStr: '10/02/2026',
+      timeStr: '20:00',
+      opponent: 'TBD',
+      venue: 'Milano Cortina 2026',
+      round: 'Preliminary',
+      rawText: 'Canada vs TBD - Preliminary Round'
+    }
+  ];
+  
+  // Generate stable IDs
+  return games.map((game) => {
+    const uidString = `${game.dateStr}-${game.timeStr}-${game.opponent}-${game.venue}-${game.round}`;
+    const hash = crypto.createHash('md5').update(uidString).digest('hex').substring(0, 12);
+    return {
+      ...game,
+      id: `mc2026-can-men-${hash}`
+    };
+  });
 }
 
 // Run if called directly (not imported)
