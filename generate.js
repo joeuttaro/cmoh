@@ -96,21 +96,36 @@ async function main() {
     
     // If scraping found no games, use fallback
     if (games.length === 0) {
-      console.warn('WARNING: No games found from scraping.');
+      console.warn('\n⚠️  WARNING: No games found from scraping.');
       console.warn('Using fallback: Manual game data');
-      console.warn('Please update getFallbackGames() in generate.js with actual schedule when available');
+      console.warn('Please update getFallbackGames() in generate.js with actual schedule when available\n');
       games = getFallbackGames();
       url = 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
+      console.log(`Fallback: Found ${games.length} games`);
     }
     
     if (games.length > 0) {
+      console.log(`\nGames to add to calendar:`);
       games.forEach((game, i) => {
         console.log(`  ${i + 1}. ${game.round}: ${game.dateStr} ${game.timeStr} vs ${game.opponent}`);
       });
+    } else {
+      console.error('\n❌ ERROR: No games available (scraping failed and fallback is empty)!');
+      process.exit(1);
     }
 
     // Generate ICS
+    console.log(`\nGenerating ICS file with ${games.length} events...`);
     const icsContent = generateICS(games, url);
+    
+    // Verify events were created
+    const eventCount = (icsContent.match(/BEGIN:VEVENT/g) || []).length;
+    if (eventCount === 0) {
+      console.error(`\n❌ ERROR: ICS file generated but contains 0 events!`);
+      console.error(`This indicates an error in event creation. Check the logs above.`);
+      process.exit(1);
+    }
+    console.log(`✓ ICS contains ${eventCount} events`);
     
     // Write to file
     await writeFile(OUTPUT_FILE, icsContent, 'utf-8');
@@ -132,7 +147,7 @@ async function main() {
  * NOTE: These are placeholder games. Update with actual schedule when published.
  * The schedule will be available closer to the Olympics (typically 6-12 months before).
  */
-function getFallbackGames() {
+export function getFallbackGames() {
   // These are placeholder dates - update with actual schedule when published
   // Milano Cortina 2026 runs Feb 6-22, 2026
   // Preliminary round typically Feb 6-11
