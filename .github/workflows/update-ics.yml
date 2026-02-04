@@ -1,0 +1,69 @@
+name: Update ICS Calendar
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allow manual triggering
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'public/**'
+      - '.github/workflows/update-ics.yml'
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate ICS file
+        run: npm run build-ics
+        env:
+          SOURCE_URL: ${{ secrets.SOURCE_URL || 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule' }}
+
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain public/)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/canada-mens-olympic-hockey-2026.ics
+          git commit -m "Update ICS calendar [skip ci]" || exit 0
+          git push
+
+      - name: Summary
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          echo "✓ ICS calendar updated and committed"
+      
+      - name: Summary (no changes)
+        if: steps.verify-changed-files.outputs.changed == 'false'
+        run: |
+          echo "ℹ No changes detected in ICS file"

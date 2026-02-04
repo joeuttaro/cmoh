@@ -1,0 +1,28 @@
+{
+  "name": "olympic-hockey-ics-feed",
+  "version": "1.0.0",
+  "description": "ICS calendar feed for Team Canada Men's Olympic Hockey games at Milano Cortina 2026",
+  "type": "module",
+  "main": "generate.js",
+  "scripts": {
+    "build-ics": "node generate.js",
+    "test": "node generate.js"
+  },
+  "keywords": [
+    "olympics",
+    "hockey",
+    "ics",
+    "calendar",
+    "canada"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "ical-generator": "^8.0.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  }
+}
