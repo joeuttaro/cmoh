@@ -118,18 +118,24 @@ async function main() {
     // If scraping found no games, use fallback
     if (games.length === 0 || useFallback) {
       console.warn('\n⚠️  WARNING: No games found from scraping.');
-      console.warn('Using fallback: Manual game data');
-      console.warn('Please update getFallbackGames() in generate.js with actual schedule when available\n');
+      console.warn('This could mean:');
+      console.warn('  1. The schedule has not been published yet (check IIHF website)');
+      console.warn('  2. The page structure has changed (parser may need updates)');
+      console.warn('  3. The page requires JavaScript that Puppeteer couldn\'t handle');
+      console.warn('\nUsing fallback: Manual game data (placeholder dates/opponents)');
+      console.warn('⚠️  IMPORTANT: Update getFallbackGames() in generate.js with actual schedule when available\n');
       
       try {
         games = getFallbackGames();
-        console.log(`Fallback: Retrieved ${games.length} games`);
+        console.log(`Fallback: Retrieved ${games.length} placeholder games`);
+        console.log('NOTE: These are placeholder games with TBD opponents. Update with real schedule!');
         
         if (games.length === 0) {
           throw new Error('getFallbackGames() returned empty array!');
         }
         
-        url = 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
+        // Use IIHF URL for fallback since that's our primary source
+        url = 'https://www.iihf.com/en/events/2026/olympic-m/schedule';
       } catch (error) {
         console.error(`❌ FATAL: Failed to get fallback games: ${error.message}`);
         throw error;
