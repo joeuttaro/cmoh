@@ -23,12 +23,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Default source URLs - can be overridden via SOURCE_URL env var
-// Try Hockey Canada first, fallback to IIHF if needed
+// Primary source: IIHF (more reliable and comprehensive)
 const SOURCE_URLS = process.env.SOURCE_URL ? 
   [process.env.SOURCE_URL] : 
   [
-    'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule',
-    'https://www.iihf.com/en/events/2026/olympic-m/schedule'
+    'https://www.iihf.com/en/events/2026/olympic-m/schedule',
+    'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule'
   ];
 
 // Output to root directory for cleaner GitHub Pages URL
