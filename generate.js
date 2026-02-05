@@ -5,6 +5,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import crypto from 'crypto';
 import { parseSchedule } from './lib/parse.js';
+import { parseIIHFAPI } from './lib/parse-api.js';
 import { generateICS } from './lib/ics.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -22,9 +23,11 @@ async function getPuppeteerFetcher() {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Default source URLs - can be overridden via SOURCE_URL env var
-// Primary source: IIHF (more reliable and comprehensive)
-const SOURCE_URLS = process.env.SOURCE_URL ? 
+// IIHF JSON API endpoint - much more reliable than HTML scraping
+const IIHF_API_URL = process.env.IIHF_API_URL || 'https://realtime.iihf.com/gamestate/GetLatestScoresState/991';
+
+// Fallback HTML sources (if API fails)
+const FALLBACK_URLS = process.env.SOURCE_URL ? 
   [process.env.SOURCE_URL] : 
   [
     'https://www.iihf.com/en/events/2026/olympic-m/schedule',
@@ -36,57 +39,79 @@ const SOURCE_URLS = process.env.SOURCE_URL ?
 const OUTPUT_FILE = join(__dirname, 'canada-mens-olympic-hockey-2026.ics');
 
 /**
- * Fetch HTML from the source URL(s) - try regular fetch first, then Puppeteer
+ * Fetch schedule from IIHF JSON API (primary) or fallback to HTML scraping
  */
 async function fetchSchedule() {
-  let lastError = null;
+  // Try IIHF JSON API first (most reliable)
+  console.log(`Fetching schedule from IIHF API: ${IIHF_API_URL}`);
   
-  // First, try regular fetch (faster)
-  for (const url of SOURCE_URLS) {
-    console.log(`Trying to fetch schedule from: ${url}`);
-    
-    try {
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(IIHF_API_URL, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        'Accept': 'application/json'
       }
+    });
 
-      const html = await response.text();
-      console.log(`✓ Fetched ${html.length} bytes of HTML from ${url}`);
-      return { html, url };
-    } catch (error) {
-      console.warn(`✗ Failed to fetch from ${url}: ${error.message}`);
-      lastError = error;
-      continue; // Try next URL
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  }
-  
-  // If regular fetch failed, try Puppeteer (handles JavaScript-rendered content)
-  const fetchWithPuppeteer = await getPuppeteerFetcher();
-  if (fetchWithPuppeteer) {
-    console.log('\nRegular fetch failed, trying Puppeteer for JavaScript-rendered content...');
-    for (const url of SOURCE_URLS) {
+
+    const jsonData = await response.json();
+    console.log(`✓ Fetched ${jsonData.length} games from IIHF API`);
+    
+    // Return as JSON data (not HTML)
+    return { jsonData, url: IIHF_API_URL, source: 'api' };
+  } catch (error) {
+    console.warn(`✗ Failed to fetch from IIHF API: ${error.message}`);
+    console.warn('Falling back to HTML scraping...');
+    
+    // Fallback to HTML scraping
+    let lastError = error;
+    
+    for (const url of FALLBACK_URLS) {
+      console.log(`Trying to fetch schedule from: ${url}`);
+      
       try {
-        return await fetchWithPuppeteer(url);
+        const response = await fetch(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const html = await response.text();
+        console.log(`✓ Fetched ${html.length} bytes of HTML from ${url}`);
+        return { html, url, source: 'html' };
       } catch (error) {
-        console.warn(`✗ Puppeteer failed for ${url}: ${error.message}`);
+        console.warn(`✗ Failed to fetch from ${url}: ${error.message}`);
         lastError = error;
         continue;
       }
     }
-  } else {
-    console.log('\nPuppeteer not available, skipping JavaScript-rendered content fetch');
+    
+    // If regular fetch failed, try Puppeteer
+    const fetchWithPuppeteer = await getPuppeteerFetcher();
+    if (fetchWithPuppeteer) {
+      console.log('\nTrying Puppeteer for JavaScript-rendered content...');
+      for (const url of FALLBACK_URLS) {
+        try {
+          return await fetchWithPuppeteer(url);
+        } catch (error) {
+          console.warn(`✗ Puppeteer failed for ${url}: ${error.message}`);
+          lastError = error;
+          continue;
+        }
+      }
+    }
+    
+    throw new Error(`Failed to fetch from all sources. Last error: ${lastError?.message}`);
   }
-  
-  // If all methods failed, throw the last error
-  throw new Error(`Failed to fetch from all sources. Last error: ${lastError?.message}`);
 }
 
 /**
@@ -101,13 +126,28 @@ async function main() {
     
     try {
       const result = await fetchSchedule();
-      games = parseSchedule(result.html, result.url);
-      url = result.url;
-      console.log(`Found ${games.length} Team Canada games from scraping`);
       
-      if (games.length === 0) {
-        console.warn('Scraping succeeded but found 0 games');
-        useFallback = true;
+      if (result.source === 'api' && result.jsonData) {
+        // Parse JSON API response
+        console.log('Parsing IIHF JSON API data...');
+        games = parseIIHFAPI(result.jsonData);
+        url = IIHF_API_URL;
+        console.log(`Found ${games.length} Team Canada games from IIHF API`);
+        
+        if (games.length === 0) {
+          console.warn('API returned data but found 0 Canada games');
+          useFallback = true;
+        }
+      } else {
+        // Parse HTML (fallback)
+        games = parseSchedule(result.html, result.url);
+        url = result.url;
+        console.log(`Found ${games.length} Team Canada games from HTML scraping`);
+        
+        if (games.length === 0) {
+          console.warn('Scraping succeeded but found 0 games');
+          useFallback = true;
+        }
       }
     } catch (error) {
       console.error('Failed to fetch schedule:', error.message);
@@ -134,8 +174,8 @@ async function main() {
           throw new Error('getFallbackGames() returned empty array!');
         }
         
-        // Use IIHF URL for fallback since that's our primary source
-        url = 'https://www.iihf.com/en/events/2026/olympic-m/schedule';
+        // Use IIHF API URL for fallback since that's our primary source
+        url = IIHF_API_URL;
       } catch (error) {
         console.error(`❌ FATAL: Failed to get fallback games: ${error.message}`);
         throw error;
