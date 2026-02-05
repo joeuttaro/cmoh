@@ -121,7 +121,7 @@ async function main() {
   try {
     // Fetch and parse schedule
     let games = [];
-    let url = SOURCE_URLS[0];
+    let url = IIHF_API_URL;
     let useFallback = false;
     
     try {
