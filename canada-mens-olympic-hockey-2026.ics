@@ -8,25 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Olympic Hockey (Milano Cortina 2026)
 X-WR-CALNAME:Canada Men's Olympic Hockey (Milano Cortina 2026)
 BEGIN:VEVENT
-UID:d7501305-9edd-4390-925b-5b470c78a8aa
+UID:52011270-949c-44f1-ad7a-a49761e5b3e1
 SEQUENCE:0
-DTSTAMP:20260213T183318Z
-DTSTART:20260213T201000Z
-DTEND:20260213T224000Z
-SUMMARY:Canada vs Switzerland (Men's Olympic Hockey)
-LOCATION:Milano Santagiulia IHO\, Milano Cortina 2026
-DESCRIPTION:Men's Olympic Hockey - Preliminary\n\nOpponent: Switzerland\nV
- enue: Milano Santagiulia IHO\n\nSource: https://realtime.iihf.com/gamestat
- e/GetLatestScoresState/991
-CATEGORIES:Hockey,Olympics
-URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/991
-STATUS:CONFIRMED
-LAST-MODIFIED:20260213T183318Z
-END:VEVENT
-BEGIN:VEVENT
-UID:3e8b036e-d8f9-47c3-80e7-b48e2cf518ff
-SEQUENCE:0
-DTSTAMP:20260213T183318Z
+DTSTAMP:20260214T010213Z
 DTSTART:20260215T154000Z
 DTEND:20260215T181000Z
 SUMMARY:Canada vs France (Men's Olympic Hockey)
@@ -37,7 +21,7 @@ DESCRIPTION:Men's Olympic Hockey - Preliminary\n\nOpponent: France\nVenue:
 CATEGORIES:Hockey,Olympics
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/991
 STATUS:CONFIRMED
-LAST-MODIFIED:20260213T183318Z
+LAST-MODIFIED:20260214T010213Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Olympic Hockey (Milano Cortina 2026)
 X-WR-TIMEZONE:Europe/Rome
