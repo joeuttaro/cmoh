@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'canada-mens-olympic-hockey-2026.ics'
+      - 'canada-mens-world-championship-2026.ics'
       - '.github/workflows/update-ics.yml'
 
 jobs:
@@ -38,31 +38,31 @@ jobs:
       - name: Generate ICS file
         run: npm run build-ics
         env:
-          SOURCE_URL: ${{ secrets.SOURCE_URL || 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule' }}
+          SOURCE_URL: ${{ secrets.SOURCE_URL || 'https://www.iihf.com/en/events/2026/wm/schedule' }}
         continue-on-error: false
 
       - name: Verify ICS file was created
         run: |
-          if [ ! -f canada-mens-olympic-hockey-2026.ics ]; then
+          if [ ! -f canada-mens-world-championship-2026.ics ]; then
             echo "❌ ERROR: ICS file was not created!"
             exit 1
           fi
           
-          FILE_SIZE=$(wc -c < canada-mens-olympic-hockey-2026.ics)
+          FILE_SIZE=$(wc -c < canada-mens-world-championship-2026.ics)
           echo "ICS file size: $FILE_SIZE bytes"
           
-          EVENT_COUNT=$(grep -c "BEGIN:VEVENT" canada-mens-olympic-hockey-2026.ics || echo "0")
+          EVENT_COUNT=$(grep -c "BEGIN:VEVENT" canada-mens-world-championship-2026.ics || echo "0")
           echo "Events in ICS file: $EVENT_COUNT"
           
           if [ "$EVENT_COUNT" -eq "0" ]; then
             echo "❌ ERROR: ICS file contains 0 events!"
             echo ""
             echo "First 1000 characters of ICS file:"
-            head -c 1000 canada-mens-olympic-hockey-2026.ics
+            head -c 1000 canada-mens-world-championship-2026.ics
             echo ""
             echo ""
             echo "Last 1000 characters of ICS file:"
-            tail -c 1000 canada-mens-olympic-hockey-2026.ics
+            tail -c 1000 canada-mens-world-championship-2026.ics
             exit 1
           fi
           
@@ -71,7 +71,7 @@ jobs:
       - name: Check for changes
         id: verify-changed-files
         run: |
-          if [ -n "$(git status --porcelain canada-mens-olympic-hockey-2026.ics)" ]; then
+          if [ -n "$(git status --porcelain canada-mens-world-championship-2026.ics)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -82,19 +82,19 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add canada-mens-olympic-hockey-2026.ics
+          git add canada-mens-world-championship-2026.ics
           git commit -m "Update ICS calendar [skip ci]" || exit 0
           git push
       
       - name: Force commit if file has events but wasn't changed
         if: steps.verify-changed-files.outputs.changed == 'false'
         run: |
-          EVENT_COUNT=$(grep -c "BEGIN:VEVENT" canada-mens-olympic-hockey-2026.ics || echo "0")
+          EVENT_COUNT=$(grep -c "BEGIN:VEVENT" canada-mens-world-championship-2026.ics || echo "0")
           if [ "$EVENT_COUNT" -gt "0" ]; then
             echo "File has $EVENT_COUNT events but wasn't detected as changed. Force committing..."
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
-            git add canada-mens-olympic-hockey-2026.ics
+            git add canada-mens-world-championship-2026.ics
             git commit -m "Update ICS calendar (force) [skip ci]" || exit 0
             git push || echo "Push failed (may be no-op)"
           fi

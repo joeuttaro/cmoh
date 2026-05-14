@@ -6,7 +6,7 @@
 
 import { readFileSync } from 'fs';
 
-const icsFile = 'canada-mens-olympic-hockey-2026.ics';
+const icsFile = 'canada-mens-world-championship-2026.ics';
 
 try {
   const content = readFileSync(icsFile, 'utf-8');

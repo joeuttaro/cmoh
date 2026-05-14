@@ -23,20 +23,16 @@ async function getPuppeteerFetcher() {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// IIHF JSON API endpoint - much more reliable than HTML scraping
-const IIHF_API_URL = process.env.IIHF_API_URL || 'https://realtime.iihf.com/gamestate/GetLatestScoresState/991';
+// IIHF JSON API — event id 969 = 2026 Men's World Championship (see stats.iihf.com/Hydra/969)
+const IIHF_API_URL = process.env.IIHF_API_URL || 'https://realtime.iihf.com/gamestate/GetLatestScoresState/969';
 
-// Fallback HTML sources (if API fails)
-const FALLBACK_URLS = process.env.SOURCE_URL ? 
-  [process.env.SOURCE_URL] : 
-  [
-    'https://www.iihf.com/en/events/2026/olympic-m/schedule',
-    'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule'
-  ];
+// Fallback HTML sources (if API fails) — IIHF official WM schedule only
+const FALLBACK_URLS = process.env.SOURCE_URL
+  ? [process.env.SOURCE_URL]
+  : ['https://www.iihf.com/en/events/2026/wm/schedule'];
 
 // Output to root directory for cleaner GitHub Pages URL
-// Alternative: use 'public' folder and URL would be /public/canada-mens-olympic-hockey-2026.ics
-const OUTPUT_FILE = join(__dirname, 'canada-mens-olympic-hockey-2026.ics');
+const OUTPUT_FILE = join(__dirname, 'canada-mens-world-championship-2026.ics');
 
 /**
  * Fetch schedule from IIHF JSON API (primary) or fallback to HTML scraping
@@ -132,7 +128,7 @@ async function main() {
         console.log('Parsing IIHF JSON API data...');
         games = parseIIHFAPI(result.jsonData);
         url = IIHF_API_URL;
-        console.log(`Found ${games.length} Team Canada games from IIHF API`);
+        console.log(`Found ${games.length} Team Canada games from IIHF API (WM 2026)`);
         
         if (games.length === 0) {
           console.warn('API returned data but found 0 Canada games');
@@ -240,49 +236,46 @@ async function main() {
 /**
  * Fallback game data - use if scraping fails
  * Update this with actual schedule when available
- * Format: Preliminary round games for Team Canada Men's Hockey
- * 
- * NOTE: These are placeholder games. Update with actual schedule when published.
- * The schedule will be available closer to the Olympics (typically 6-12 months before).
+ * Format: placeholder preliminary games for Team Canada at WM 2026
+ *
+ * NOTE: These are placeholder games. Update with actual schedule if API/HTML fail.
  */
 export function getFallbackGames() {
-  // These are placeholder dates - update with actual schedule when published
-  // Milano Cortina 2026 runs Feb 6-22, 2026
-  // Preliminary round typically Feb 6-11
+  // 2026 IIHF World Championship — Switzerland, May 2026 (placeholder dates)
   const games = [
     {
-      dateStr: '06/02/2026',
-      timeStr: '20:00',
+      dateStr: '15/05/2026',
+      timeStr: '16:20',
       opponent: 'TBD',
-      venue: 'Milano Cortina 2026',
+      venue: 'IIHF World Championship 2026',
       round: 'Preliminary',
       rawText: 'Canada vs TBD - Preliminary Round'
     },
     {
-      dateStr: '08/02/2026',
-      timeStr: '20:00',
+      dateStr: '17/05/2026',
+      timeStr: '20:20',
       opponent: 'TBD',
-      venue: 'Milano Cortina 2026',
+      venue: 'IIHF World Championship 2026',
       round: 'Preliminary',
       rawText: 'Canada vs TBD - Preliminary Round'
     },
     {
-      dateStr: '10/02/2026',
-      timeStr: '20:00',
+      dateStr: '19/05/2026',
+      timeStr: '16:20',
       opponent: 'TBD',
-      venue: 'Milano Cortina 2026',
+      venue: 'IIHF World Championship 2026',
       round: 'Preliminary',
       rawText: 'Canada vs TBD - Preliminary Round'
     }
   ];
-  
+
   // Generate stable IDs
   return games.map((game) => {
     const uidString = `${game.dateStr}-${game.timeStr}-${game.opponent}-${game.venue}-${game.round}`;
     const hash = crypto.createHash('md5').update(uidString).digest('hex').substring(0, 12);
     return {
       ...game,
-      id: `mc2026-can-men-${hash}`
+      id: `wm2026-can-men-${hash}`
     };
   });
 }

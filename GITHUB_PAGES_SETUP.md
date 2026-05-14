@@ -4,7 +4,7 @@
 
 Your subscription URL will be:
 ```
-https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
+https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics
 ```
 
 ## Detailed Setup Instructions
@@ -15,7 +15,7 @@ https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 # If you haven't initialized git yet
 git init
 git add .
-git commit -m "Initial commit: Olympic Hockey ICS feed"
+git commit -m "Initial commit: IIHF Worlds 2026 ICS feed"
 
 # Add your remote (replace if you already have one)
 git remote add origin https://github.com/joeuttaro/cmoh.git
@@ -41,7 +41,7 @@ git push -u origin main
 
 Test the direct link:
 ```
-https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
+https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics
 ```
 
 **What to expect:**
@@ -67,7 +67,7 @@ https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 #### Apple Calendar (macOS/iOS)
 1. Open Calendar app
 2. **File** → **New Calendar Subscription** (or **Calendar** → **New Calendar Subscription** on iOS)
-3. Paste: `https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics`
+3. Paste: `https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics`
 4. Set refresh frequency: **Every 6 hours** (recommended)
 5. Click **Subscribe**
 
@@ -75,13 +75,13 @@ https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 1. Open Google Calendar (calendar.google.com)
 2. Click the **"+"** next to "Other calendars" (left sidebar)
 3. Select **"From URL"**
-4. Paste: `https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics`
+4. Paste: `https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics`
 5. Click **"Add calendar"**
 
 #### Outlook
 1. Open Outlook Calendar
 2. Right-click **"Other calendars"** → **"Add calendar"** → **"From Internet"**
-3. Paste: `https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics`
+3. Paste: `https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics`
 4. Click **OK**
 
 ## Troubleshooting
@@ -94,9 +94,9 @@ https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 3. GitHub Pages is not enabled or configured incorrectly
 
 **Solutions:**
-- Check that the file exists: `https://github.com/joeuttaro/cmoh/blob/main/public/canada-mens-olympic-hockey-2026.ics`
+- Check that the file exists: `https://github.com/joeuttaro/cmoh/blob/main/public/canada-mens-world-championship-2026.ics`
 - Verify GitHub Pages is enabled in Settings → Pages
-- Try accessing: `https://joeuttaro.github.io/cmoh/public/canada-mens-olympic-hockey-2026.ics` (with `/public/` in path)
+- Try accessing: `https://joeuttaro.github.io/cmoh/public/canada-mens-world-championship-2026.ics` (with `/public/` in path)
 
 ### GitHub Action not running
 
@@ -124,7 +124,7 @@ The Hockey Canada page structure may have changed. You'll need to:
 ## File Structure
 
 The ICS file is generated in the **root directory** of the repository for a clean URL:
-- File location: `canada-mens-olympic-hockey-2026.ics` (root)
-- GitHub Pages URL: `https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics`
+- File location: `canada-mens-world-championship-2026.ics` (root)
+- GitHub Pages URL: `https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics`
 
 This provides the cleanest subscription URL without needing `/public/` in the path.

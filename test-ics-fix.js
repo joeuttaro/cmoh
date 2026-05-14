@@ -2,11 +2,11 @@
 const ical = require('ical-generator');
 const crypto = require('crypto');
 
-// Simulate a game
+// Simulate a game (WM 2026 — May, CEST = UTC+2 for local→UTC in this legacy test harness)
 const game = {
-  id: 'mc2026-can-men-test123',
-  dateStr: '06/02/2026',
-  timeStr: '20:00',
+  id: 'wm2026-can-men-test123',
+  dateStr: '15/05/2026',
+  timeStr: '16:20',
   opponent: 'Test Team',
   venue: 'Test Venue',
   round: 'Preliminary'
@@ -21,28 +21,28 @@ const timeParts = game.timeStr.split(':');
 const hours = parseInt(timeParts[0]);
 const minutes = parseInt(timeParts[1]);
 
-// Create UTC date (CET = UTC+1, so subtract 1 hour)
+// Create UTC date (CEST = UTC+2, so subtract 2 hours)
 const localDate = new Date(Date.UTC(year, month, day, hours, minutes));
-const startDate = new Date(localDate.getTime() - (1 * 60 * 60 * 1000));
+const startDate = new Date(localDate.getTime() - (2 * 60 * 60 * 1000));
 const endDate = new Date(startDate.getTime() + (2.5 * 60 * 60 * 1000));
 
 // Create calendar
 const calendar = ical({
   prodId: {
-    company: 'Olympic Hockey ICS Feed',
-    product: 'Canada Men\'s Olympic Hockey Calendar',
+    company: 'Team Canada Hockey ICS Feed',
+    product: 'Canada Men\'s World Championship Calendar',
     language: 'EN'
   },
-  name: 'Canada Men\'s Olympic Hockey (Milano Cortina 2026)',
-  timezone: 'Europe/Rome',
+  name: 'Canada Men\'s Hockey (IIHF World Championship 2026)',
+  timezone: 'Europe/Zurich',
   url: 'https://test.example.com',
   source: 'https://test.example.com'
 });
 
 // Add calendar metadata with X- prefix
 try {
-  calendar.x('X-WR-CALNAME', 'Canada Men\'s Olympic Hockey (Milano Cortina 2026)');
-  calendar.x('X-WR-TIMEZONE', 'Europe/Rome');
+  calendar.x('X-WR-CALNAME', 'Canada Men\'s Hockey (IIHF World Championship 2026)');
+  calendar.x('X-WR-TIMEZONE', 'Europe/Zurich');
   console.log('✓ Custom properties added successfully');
 } catch (error) {
   console.error('❌ Error adding custom properties:', error.message);
@@ -52,19 +52,16 @@ try {
 // Create event
 try {
   const event = calendar.createEvent({
-    uid: game.id + '@olympic-hockey-ics.github.io',
+    uid: game.id + '@worlds-hockey-ics.github.io',
     start: startDate,
     end: endDate,
-    summary: `Canada vs ${game.opponent} (Men's Olympic Hockey)`,
-    description: `Men's Olympic Hockey - ${game.round}\n\nOpponent: ${game.opponent}\nVenue: ${game.venue}`,
-    location: `${game.venue}, Milano Cortina 2026`,
+    summary: `Canada vs ${game.opponent} (Men's Worlds 2026)`,
+    description: `IIHF Men's World Championship 2026 - ${game.round}\n\nOpponent: ${game.opponent}\nVenue: ${game.venue}`,
+    location: `${game.venue}, IIHF WM 2026`,
     url: 'https://test.example.com',
     status: 'CONFIRMED',
     transp: 'OPAQUE',
-    categories: [
-      { name: 'Hockey' },
-      { name: 'Olympics' }
-    ],
+    categories: [{ name: 'Hockey' }, { name: 'IIHF World Championship' }],
     stamp: new Date(),
     lastModified: new Date()
   });

@@ -1,0 +1,60 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Team Canada Hockey ICS Feed//Canada Men's World Championship Cal
+ endar//EN
+URL:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
+SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
+ 969
+NAME:Canada Men's Hockey (IIHF World Championship 2026)
+X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
+BEGIN:VEVENT
+UID:cb65f30e-0af6-4726-b37e-fb6f709242d9
+SEQUENCE:0
+DTSTAMP:20260514T185306Z
+DTSTART:20260515T142000Z
+DTEND:20260515T165000Z
+SUMMARY:Canada vs Sweden (Men's Worlds 2026)
+LOCATION:BCF Arena\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ Sweden\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/Ge
+ tLatestScoresState/969
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
+STATUS:CONFIRMED
+LAST-MODIFIED:20260514T185306Z
+END:VEVENT
+BEGIN:VEVENT
+UID:bb1ad11c-1e5c-4c7a-a14b-a322e64710ad
+SEQUENCE:0
+DTSTAMP:20260514T185306Z
+DTSTART:20260516T142000Z
+DTEND:20260516T165000Z
+SUMMARY:Canada vs Italy (Men's Worlds 2026)
+LOCATION:BCF Arena\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ Italy\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/Get
+ LatestScoresState/969
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
+STATUS:CONFIRMED
+LAST-MODIFIED:20260514T185306Z
+END:VEVENT
+BEGIN:VEVENT
+UID:d17359e9-19b7-4ece-9a01-3567e5d7ade6
+SEQUENCE:0
+DTSTAMP:20260514T185306Z
+DTSTART:20260518T142000Z
+DTEND:20260518T165000Z
+SUMMARY:Canada vs Denmark (Men's Worlds 2026)
+LOCATION:BCF Arena\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ Denmark\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/G
+ etLatestScoresState/969
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
+STATUS:CONFIRMED
+LAST-MODIFIED:20260514T185306Z
+END:VEVENT
+X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
+X-WR-TIMEZONE:Europe/Zurich
+END:VCALENDAR

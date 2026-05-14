@@ -9,8 +9,8 @@ import { generateICS } from './lib/ics.js';
 
 // Create a simple test game
 const testGame = {
-  id: 'mc2026-can-men-test123',
-  dateStr: '06/02/2026',
+  id: 'wm2026-can-men-test123',
+  dateStr: '15/05/2026',
   timeStr: '20:00',
   opponent: 'Test Team',
   venue: 'Test Venue',

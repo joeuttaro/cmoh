@@ -8,7 +8,7 @@
 import fetch from 'node-fetch';
 import { parseSchedule } from './lib/parse.js';
 
-const url = process.argv[2] || 'https://www.hockeycanada.ca/en-ca/team-canada/men/olympics/2026/stats/schedule';
+const url = process.argv[2] || 'https://www.iihf.com/en/events/2026/wm/schedule';
 
 async function debug() {
   try {
@@ -44,7 +44,7 @@ async function debug() {
       console.log('1. Check /tmp/hockey-schedule.html to see the actual HTML structure');
       console.log('2. The page might use JavaScript to load content (cheerio can\'t handle that)');
       console.log('3. The page structure might have changed');
-      console.log('4. Try the IIHF schedule: node debug-parse.js https://www.iihf.com/en/events/2026/olympic-m/schedule');
+      console.log('4. Try another URL: node debug-parse.js https://www.iihf.com/en/events/2026/wm/schedule');
     } else {
       games.forEach((game, i) => {
         console.log(`${i + 1}. ${game.round}: ${game.dateStr} ${game.timeStr}`);

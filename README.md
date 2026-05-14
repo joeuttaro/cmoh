@@ -1,34 +1,38 @@
-# Team Canada Men's Olympic Hockey ICS Calendar Feed
+# Team Canada Men's Hockey — IIHF World Championship 2026 ICS Feed
 
-A subscribe-able ICS calendar feed for **Team Canada Men's Olympic Hockey games** at the **Milano Cortina 2026** Winter Olympics.
+A subscribe-able ICS calendar feed for **Team Canada men's games** at the **2026 IIHF Ice Hockey World Championship** (Switzerland).
 
 ## What This Does
 
 This project automatically:
-1. Fetches the schedule from Hockey Canada's official 2026 Olympic Men's Hockey schedule page
-2. Extracts only Team Canada games
+
+1. Fetches the schedule from the **IIHF realtime JSON API** (event `969`, same tournament as [stats.iihf.com/Hydra/969](https://stats.iihf.com/Hydra/969/)), with HTML fallback to the official [WM 2026 schedule](https://www.iihf.com/en/events/2026/wm/schedule)
+2. Keeps only games involving **Canada**
 3. Generates a valid `.ics` calendar file
-4. Updates it automatically via GitHub Actions every 6 hours
+4. Updates it via **GitHub Actions** every 6 hours
 
 ## Subscription
 
-Once GitHub Pages is enabled, you can subscribe to the calendar using:
+Once GitHub Pages is enabled, you can subscribe using:
 
 ### Subscription URL
 
 **HTTPS:**
+
 ```
-https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
+https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics
 ```
 
 **Webcal (alternative):**
+
 ```
-webcal://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
+webcal://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics
 ```
 
 ### How to Subscribe
 
 #### Apple Calendar (macOS/iOS)
+
 1. Open Calendar app
 2. File → New Calendar Subscription
 3. Paste the subscription URL
@@ -36,6 +40,7 @@ webcal://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 5. Click Subscribe
 
 #### Google Calendar
+
 1. Open Google Calendar
 2. Click the "+" next to "Other calendars"
 3. Select "From URL"
@@ -43,6 +48,7 @@ webcal://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 5. Click "Add calendar"
 
 #### Outlook
+
 1. Open Outlook Calendar
 2. Right-click "Other calendars" → "Add calendar" → "From Internet"
 3. Paste the subscription URL
@@ -52,7 +58,7 @@ webcal://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
 
 ### Prerequisites
 
-- Node.js 20+ 
+- Node.js 20+
 - npm
 
 ### Installation
@@ -68,14 +74,14 @@ npm run build-ics
 ```
 
 This will:
-- Fetch the schedule from Hockey Canada (with IIHF as backup)
-- Parse the HTML using multiple strategies
-- Extract all Team Canada games across all rounds
-- Generate `canada-mens-olympic-hockey-2026.ics` in the root directory
+
+- Call the IIHF API (`GetLatestScoresState/969`) first, then fall back to scraping the WM schedule page if needed
+- Extract all Team Canada games across rounds returned by the API
+- Write `canada-mens-world-championship-2026.ics` in the project root
 
 ### Debug Parsing
 
-To test the parser without generating an ICS file:
+To test the HTML parser without generating an ICS file:
 
 ```bash
 node debug-parse.js
@@ -84,27 +90,33 @@ node debug-parse.js
 Or test a specific URL:
 
 ```bash
-node debug-parse.js https://www.iihf.com/en/events/2026/olympic-m/schedule
+node debug-parse.js https://www.iihf.com/en/events/2026/wm/schedule
 ```
 
 ### Custom Source URL
 
-You can override the source URL via environment variable:
+Override the HTML fallback URL (API URL is separate):
 
 ```bash
-SOURCE_URL=https://example.com/schedule npm run build-ics
+SOURCE_URL=https://www.iihf.com/en/events/2026/wm/schedule npm run build-ics
+```
+
+Override the IIHF API tournament id (default `969`):
+
+```bash
+IIHF_API_URL=https://realtime.iihf.com/gamestate/GetLatestScoresState/969 npm run build-ics
 ```
 
 ## GitHub Pages Setup (Step-by-Step)
 
 ### Step 1: Push Your Code to GitHub
 
-If you haven't already, push this repository to GitHub:
+If you haven't already:
 
 ```bash
 git init
 git add .
-git commit -m "Initial commit: Olympic Hockey ICS feed"
+git commit -m "Initial commit: IIHF Worlds 2026 ICS feed"
 git remote add origin https://github.com/joeuttaro/cmoh.git
 git branch -M main
 git push -u origin main
@@ -113,65 +125,37 @@ git push -u origin main
 ### Step 2: Enable GitHub Pages
 
 1. Go to your repository on GitHub: `https://github.com/joeuttaro/cmoh`
-2. Click on **Settings** (top menu bar)
-3. Scroll down to **Pages** in the left sidebar (under "Code and automation")
-4. Under **Source**, select:
-   - **Deploy from a branch**
-   - **Branch**: `main`
-   - **Folder**: `/ (root)` or `/public` (if available)
-   - Click **Save**
+2. Click **Settings** → **Pages**
+3. Under **Source**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`, then **Save**
+4. After deployment, the site base URL is `https://joeuttaro.github.io/cmoh/`
 
-   **Note:** If `/public` is not available as an option, use `/ (root)`. GitHub Pages will serve files from the root, and the `public/` folder will be accessible.
+### Step 3: Verify the ICS File
 
-5. Wait a few minutes for GitHub to build and deploy your site
-6. Your site will be available at: `https://joeuttaro.github.io/cmoh/`
+Open:
 
-### Step 3: Verify the ICS File is Accessible
+`https://joeuttaro.github.io/cmoh/canada-mens-world-championship-2026.ics`
 
-After GitHub Pages is enabled, test that the file is accessible:
+You should see ICS text or a download.
 
-1. Open: `https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics`
-2. You should see the ICS calendar content (or download the file)
-3. If you get a 404, wait a few more minutes and try again
+### Step 4: GitHub Action
 
-### Step 4: Test the GitHub Action
+Under **Actions**, use **Update ICS Calendar**; you can run it manually with **Run workflow**.
 
-1. Go to the **Actions** tab in your repository
-2. You should see the "Update ICS Calendar" workflow
-3. You can manually trigger it by clicking "Run workflow"
-4. Check the logs to ensure it runs successfully
+### Step 5: Subscribe
 
-### Step 5: Subscribe to the Calendar
-
-Once verified, use this URL to subscribe:
-
-```
-https://joeuttaro.github.io/cmoh/canada-mens-olympic-hockey-2026.ics
-```
+Use the HTTPS URL above in your calendar app.
 
 ### Automatic Updates
 
-The GitHub Action will automatically:
-- Run every 6 hours
-- Fetch the latest schedule from Hockey Canada
-- Update the ICS file if changes are detected
-- Commit and push changes back to the repository
-- GitHub Pages will automatically serve the updated file
-
-### Manual Trigger
-
-You can also manually trigger the workflow:
-1. Go to **Actions** tab
-2. Click on "Update ICS Calendar" workflow
-3. Click "Run workflow" → "Run workflow" button
+The workflow runs every 6 hours, regenerates the ICS file, commits changes when the file differs, and GitHub Pages serves the updated file.
 
 ## Features
 
-- ✅ **Stable UIDs**: Each game has a deterministic UID that doesn't change between updates
-- ✅ **Automatic updates**: GitHub Action refreshes the calendar every 6 hours
-- ✅ **Timezone handling**: Converts Italy time (Europe/Rome) to UTC
-- ✅ **Event details**: Includes opponent, venue, round, and source link
-- ✅ **Standard ICS format**: Compatible with all major calendar applications
+- **Stable UIDs**: Deterministic IDs per game (`wm2026-can-men-…`) for stable subscriptions
+- **Automatic updates**: Scheduled Action every 6 hours
+- **Timezone handling**: API uses `GameDateTimeUTC`; scraped times use **CEST (UTC+2)** as local default for May 2026 in Switzerland
+- **Event details**: Opponent, venue, round, source link
+- **Standard ICS**: Works with major calendar apps
 
 ## File Structure
 
@@ -179,12 +163,11 @@ You can also manually trigger the workflow:
 .
 ├── generate.js              # Main CLI script
 ├── lib/
-│   ├── parse.js            # HTML parsing logic
-│   └── ics.js              # ICS generation logic
-├── canada-mens-olympic-hockey-2026.ics  # Generated ICS file (in root for GitHub Pages)
-├── .github/
-│   └── workflows/
-│       └── update-ics.yml  # GitHub Action workflow
+│   ├── parse.js             # HTML parsing (IIHF schedule fallback)
+│   ├── parse-api.js         # IIHF JSON API parsing
+│   └── ics.js               # ICS generation
+├── canada-mens-world-championship-2026.ics  # Generated (root, for Pages)
+├── .github/workflows/update-ics.yml
 └── package.json
 ```
 
@@ -192,29 +175,18 @@ You can also manually trigger the workflow:
 
 ### No games found
 
-If the script reports "No games found", try these steps:
-
-1. **Check the debug script**: Run `node debug-parse.js` to see detailed parsing output
-2. **Try alternative source**: The script automatically tries IIHF schedule as a backup
-3. **Check HTML structure**: If parsing fails, the HTML is saved to `/tmp/hockey-schedule.html` for inspection
-4. **JavaScript-rendered content**: If the schedule loads via JavaScript, cheerio can't parse it. You may need to use Puppeteer or Playwright for dynamic content
-5. **Update parser**: If the page structure changed, update the parsing logic in `lib/parse.js`
-
-The parser now supports:
-- Multiple HTML structures (tables, divs, structured data)
-- All tournament rounds (Preliminary, Qualifying, Quarterfinal, Semifinal, Final)
-- Multiple data sources (Hockey Canada and IIHF)
-- Better opponent and date/time extraction
+1. Run `node debug-parse.js` for parser diagnostics
+2. Confirm the API responds: `curl -sS 'https://realtime.iihf.com/gamestate/GetLatestScoresState/969' | head -c 200`
+3. Inspect saved HTML: `/tmp/hockey-schedule.html` after `debug-parse.js`
+4. If the IIHF site blocks automated requests, rely on the API path or run locally with a normal browser user agent
 
 ### Timezone issues
 
-The script assumes Italy is in CET (UTC+1) during February 2026. If there are timezone discrepancies, check the `parseDateTime` function in `lib/ics.js`.
+API-sourced games use UTC from IIHF. HTML fallback assumes **Europe/Zurich summer time (CEST, UTC+2)** for May 2026; see `parseDateTime` in `lib/ics.js`.
 
 ### Calendar not updating
 
-- Check GitHub Actions logs to see if the workflow is running
-- Verify the ICS file is being generated correctly
-- Ensure GitHub Pages is enabled and serving the file
+Check Actions logs, confirm the ICS file has `BEGIN:VEVENT` entries, and that Pages is enabled.
 
 ## License
 

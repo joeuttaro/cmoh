@@ -1,0 +1,59 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Team Canada Hockey ICS Feed//Canada Men's World Championship Cal
+ endar//EN
+URL:https://test.example.com
+SOURCE;VALUE=URI:https://test.example.com
+NAME:Canada Men's Hockey (IIHF World Championship 2026)
+X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
+BEGIN:VEVENT
+UID:2fe994c1-4344-46f7-a389-1af9ba215c87
+SEQUENCE:0
+DTSTAMP:20260514T185307Z
+DTSTART:20260515T142000Z
+DTEND:20260515T165000Z
+SUMMARY:Canada vs TBD (Men's Worlds 2026)
+LOCATION:IIHF World Championship 2026\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ TBD\nVenue: IIHF World Championship 2026\n\nSource: https://test.example.c
+ om
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://test.example.com
+STATUS:CONFIRMED
+LAST-MODIFIED:20260514T185307Z
+END:VEVENT
+BEGIN:VEVENT
+UID:27409445-177a-4450-a46e-c96939fd8519
+SEQUENCE:0
+DTSTAMP:20260514T185307Z
+DTSTART:20260517T182000Z
+DTEND:20260517T205000Z
+SUMMARY:Canada vs TBD (Men's Worlds 2026)
+LOCATION:IIHF World Championship 2026\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ TBD\nVenue: IIHF World Championship 2026\n\nSource: https://test.example.c
+ om
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://test.example.com
+STATUS:CONFIRMED
+LAST-MODIFIED:20260514T185307Z
+END:VEVENT
+BEGIN:VEVENT
+UID:d7ae78af-9f04-4ad1-aca7-3e2187c68236
+SEQUENCE:0
+DTSTAMP:20260514T185307Z
+DTSTART:20260519T142000Z
+DTEND:20260519T165000Z
+SUMMARY:Canada vs TBD (Men's Worlds 2026)
+LOCATION:IIHF World Championship 2026\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ TBD\nVenue: IIHF World Championship 2026\n\nSource: https://test.example.c
+ om
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://test.example.com
+STATUS:CONFIRMED
+LAST-MODIFIED:20260514T185307Z
+END:VEVENT
+X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
+X-WR-TIMEZONE:Europe/Zurich
+END:VCALENDAR

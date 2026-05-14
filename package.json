@@ -1,7 +1,7 @@
 {
-  "name": "olympic-hockey-ics-feed",
+  "name": "worlds-hockey-ics-feed",
   "version": "1.0.0",
-  "description": "ICS calendar feed for Team Canada Men's Olympic Hockey games at Milano Cortina 2026",
+  "description": "ICS calendar feed for Team Canada Men's games at the 2026 IIHF World Championship",
   "type": "module",
   "main": "generate.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "test": "node generate.js"
   },
   "keywords": [
-    "olympics",
+    "iihf",
+    "world-championship",
     "hockey",
     "ics",
     "calendar",
