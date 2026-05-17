@@ -8,25 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:92cefbc7-add2-4af0-bbab-1e8f15d4b392
+UID:7233226d-274c-44d8-a682-98f399b47604
 SEQUENCE:0
-DTSTAMP:20260516T125503Z
-DTSTART:20260516T142000Z
-DTEND:20260516T165000Z
-SUMMARY:Canada vs Italy (Men's Worlds 2026)
-LOCATION:BCF Arena\, IIHF WM 2026
-DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
- Italy\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/Get
- LatestScoresState/969
-CATEGORIES:Hockey,IIHF World Championship
-URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
-STATUS:CONFIRMED
-LAST-MODIFIED:20260516T125503Z
-END:VEVENT
-BEGIN:VEVENT
-UID:42f19777-ff0d-4c74-bc56-9c78ce5dbe06
-SEQUENCE:0
-DTSTAMP:20260516T125503Z
+DTSTAMP:20260517T015005Z
 DTSTART:20260518T142000Z
 DTEND:20260518T165000Z
 SUMMARY:Canada vs Denmark (Men's Worlds 2026)
@@ -37,7 +21,23 @@ DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent:
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260516T125503Z
+LAST-MODIFIED:20260517T015005Z
+END:VEVENT
+BEGIN:VEVENT
+UID:d540bb3c-f0b9-46b5-8a8d-303be4b0988f
+SEQUENCE:0
+DTSTAMP:20260517T015005Z
+DTSTART:20260521T142000Z
+DTEND:20260521T165000Z
+SUMMARY:Canada vs Norway (Men's Worlds 2026)
+LOCATION:BCF Arena\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ Norway\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/Ge
+ tLatestScoresState/969
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
+STATUS:CONFIRMED
+LAST-MODIFIED:20260517T015005Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
