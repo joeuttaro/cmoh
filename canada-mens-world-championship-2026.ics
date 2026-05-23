@@ -8,25 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:34d4a659-5c4a-4105-ab3a-d1ca0ff8d3c0
+UID:6ffd543c-9599-4c4a-871c-dedf1d000e59
 SEQUENCE:0
-DTSTAMP:20260521T194416Z
-DTSTART:20260522T142000Z
-DTEND:20260522T165000Z
-SUMMARY:Canada vs Slovenia (Men's Worlds 2026)
-LOCATION:BCF Arena\, IIHF WM 2026
-DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
- Slovenia\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/
- GetLatestScoresState/969
-CATEGORIES:Hockey,IIHF World Championship
-URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
-STATUS:CONFIRMED
-LAST-MODIFIED:20260521T194416Z
-END:VEVENT
-BEGIN:VEVENT
-UID:13564194-ff91-442a-bc2c-00900835b62e
-SEQUENCE:0
-DTSTAMP:20260521T194416Z
+DTSTAMP:20260523T015017Z
 DTSTART:20260524T182000Z
 DTEND:20260524T205000Z
 SUMMARY:Canada vs Slovakia (Men's Worlds 2026)
@@ -37,7 +21,23 @@ DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent:
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260521T194416Z
+LAST-MODIFIED:20260523T015017Z
+END:VEVENT
+BEGIN:VEVENT
+UID:fbde5bc5-9a55-44ad-bd15-b1c5146a6f79
+SEQUENCE:0
+DTSTAMP:20260523T015017Z
+DTSTART:20260526T182000Z
+DTEND:20260526T205000Z
+SUMMARY:Canada vs Czechia (Men's Worlds 2026)
+LOCATION:BCF Arena\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
+ Czechia\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/gamestate/G
+ etLatestScoresState/969
+CATEGORIES:Hockey,IIHF World Championship
+URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
+STATUS:CONFIRMED
+LAST-MODIFIED:20260523T015017Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
