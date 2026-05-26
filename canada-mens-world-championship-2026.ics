@@ -8,9 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:c7651243-79ff-480f-9e0d-549fb871145b
+UID:97c5aa50-8177-402b-afee-00692c4f5598
 SEQUENCE:0
-DTSTAMP:20260526T015509Z
+DTSTAMP:20260526T090536Z
 DTSTART:20260526T182000Z
 DTEND:20260526T205000Z
 SUMMARY:Canada vs Czechia (Men's Worlds 2026)
@@ -21,7 +21,7 @@ DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent:
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260526T015509Z
+LAST-MODIFIED:20260526T090536Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
