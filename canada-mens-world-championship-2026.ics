@@ -8,9 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:6c38797e-fb04-4a4f-8e0e-64d40d9f150d
+UID:8432c38e-2656-4688-82c3-518833bd96ca
 SEQUENCE:0
-DTSTAMP:20260527T085949Z
+DTSTAMP:20260527T145230Z
 DTSTART:20260528T142000Z
 DTEND:20260528T165000Z
 SUMMARY:Canada vs United States (Men's Worlds 2026)
@@ -21,7 +21,7 @@ DESCRIPTION:IIHF Men's World Championship 2026 - Quarterfinal\n\nOpponent:
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260527T085949Z
+LAST-MODIFIED:20260527T145230Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
