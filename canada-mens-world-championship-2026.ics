@@ -8,52 +8,20 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:53c99d4b-1357-47a7-8e45-37825d6b1d66
+UID:9b056490-c538-433a-b421-43fc937befea
 SEQUENCE:0
-DTSTAMP:20260526T195448Z
-DTSTART:20260515T142000Z
-DTEND:20260515T165000Z
-SUMMARY:Canada vs TBD (Men's Worlds 2026)
-LOCATION:IIHF World Championship 2026\, IIHF WM 2026
-DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
- TBD\nVenue: IIHF World Championship 2026\n\nSource: https://realtime.iihf.
- com/gamestate/GetLatestScoresState/969
+DTSTAMP:20260527T020241Z
+DTSTART:20260528T142000Z
+DTEND:20260528T165000Z
+SUMMARY:Canada vs United States (Men's Worlds 2026)
+LOCATION:BCF Arena\, IIHF WM 2026
+DESCRIPTION:IIHF Men's World Championship 2026 - Quarterfinal\n\nOpponent:
+  United States\nVenue: BCF Arena\n\nSource: https://realtime.iihf.com/game
+ state/GetLatestScoresState/969
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260526T195448Z
-END:VEVENT
-BEGIN:VEVENT
-UID:827857a0-0c94-4df7-8428-a6f1686e9605
-SEQUENCE:0
-DTSTAMP:20260526T195448Z
-DTSTART:20260517T182000Z
-DTEND:20260517T205000Z
-SUMMARY:Canada vs TBD (Men's Worlds 2026)
-LOCATION:IIHF World Championship 2026\, IIHF WM 2026
-DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
- TBD\nVenue: IIHF World Championship 2026\n\nSource: https://realtime.iihf.
- com/gamestate/GetLatestScoresState/969
-CATEGORIES:Hockey,IIHF World Championship
-URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
-STATUS:CONFIRMED
-LAST-MODIFIED:20260526T195448Z
-END:VEVENT
-BEGIN:VEVENT
-UID:3b21b322-c974-4306-bea1-8e690193b2df
-SEQUENCE:0
-DTSTAMP:20260526T195448Z
-DTSTART:20260519T142000Z
-DTEND:20260519T165000Z
-SUMMARY:Canada vs TBD (Men's Worlds 2026)
-LOCATION:IIHF World Championship 2026\, IIHF WM 2026
-DESCRIPTION:IIHF Men's World Championship 2026 - Preliminary\n\nOpponent: 
- TBD\nVenue: IIHF World Championship 2026\n\nSource: https://realtime.iihf.
- com/gamestate/GetLatestScoresState/969
-CATEGORIES:Hockey,IIHF World Championship
-URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
-STATUS:CONFIRMED
-LAST-MODIFIED:20260526T195448Z
+LAST-MODIFIED:20260527T020241Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
