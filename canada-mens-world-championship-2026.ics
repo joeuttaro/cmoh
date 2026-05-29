@@ -8,9 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:3032571d-8219-48c6-a6a1-9392c1086b88
+UID:28e77cc1-2c79-4a62-84b1-e51ac74e5b50
 SEQUENCE:0
-DTSTAMP:20260529T143938Z
+DTSTAMP:20260529T200714Z
 DTSTART:20260530T180000Z
 DTEND:20260530T203000Z
 SUMMARY:Canada vs Finland (Men's Worlds 2026)
@@ -21,7 +21,7 @@ DESCRIPTION:IIHF Men's World Championship 2026 - Semifinal\n\nOpponent: Fi
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260529T143938Z
+LAST-MODIFIED:20260529T200714Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
