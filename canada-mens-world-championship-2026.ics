@@ -8,9 +8,9 @@ SOURCE;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/
 NAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 BEGIN:VEVENT
-UID:474b1daf-f8ed-4d45-8c3f-6d466e65d26a
+UID:9c200cb8-a51b-4769-bb93-bdf549006f9d
 SEQUENCE:0
-DTSTAMP:20260531T020351Z
+DTSTAMP:20260531T083533Z
 DTSTART:20260531T133000Z
 DTEND:20260531T160000Z
 SUMMARY:Canada vs Norway (Men's Worlds 2026)
@@ -21,7 +21,7 @@ DESCRIPTION:IIHF Men's World Championship 2026 - Final\n\nOpponent: Norway
 CATEGORIES:Hockey,IIHF World Championship
 URL;VALUE=URI:https://realtime.iihf.com/gamestate/GetLatestScoresState/969
 STATUS:CONFIRMED
-LAST-MODIFIED:20260531T020351Z
+LAST-MODIFIED:20260531T083533Z
 END:VEVENT
 X-WR-CALNAME:Canada Men's Hockey (IIHF World Championship 2026)
 X-WR-TIMEZONE:Europe/Zurich
